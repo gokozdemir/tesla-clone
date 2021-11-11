@@ -1,11 +1,14 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import MenuIcon from '@mui/icons-material/Menu'
 import CloseIcon from '@mui/icons-material/Close'
+import { selectCars } from '../features/car/carSlice'
+import { useSelector } from 'react-redux'
 
 function Header() {
 
     const [burgerStatus, setBurgerStatus] = useState(false);
+    const cars = useSelector(selectCars)
 
     return (
         <Container>
@@ -13,21 +16,25 @@ function Header() {
                 <img src="./images/logo.svg" alt="logo" />
             </a>
             <Menu>
-                <a href={"#".toString()}>Model S</a>
-                <a href={"#".toString()}>Model 3</a>
-                <a href={"#".toString()}>Model X</a>
-                <a href={"#".toString()}>Model Y</a>
+                {
+                    cars && cars.map((car, index) => (
+                        <a key={index} href={"#".toString()}>{car}</a>
+                    ))
+                }
             </Menu>
             <RightMenu>
                 <a href={"#".toString()}>Shop</a>
                 <a href={"#".toString()}>Tesla Account</a>
-                <CustomMenu onClick={() => setBurgerStatus(true)}/>
+                <CustomMenu onClick={() => setBurgerStatus(true)} />
             </RightMenu>
             <BurgerNav show={burgerStatus}>
                 <CloseWrapper>
-                    <CustomClose onClick={() => setBurgerStatus(false)}/>
+                    <CustomClose onClick={() => setBurgerStatus(false)} />
                 </CloseWrapper>
 
+                {cars && cars.map((car, index) => (
+                    <li key={index}><a href={"#".toString()}>{car}</a></li>
+                ))}
                 <li><a href={"#".toString()}>Existing Inventory</a></li>
                 <li><a href={"#".toString()}>Used Inventory</a></li>
                 <li><a href={"#".toString()}>Trade-in</a></li>
